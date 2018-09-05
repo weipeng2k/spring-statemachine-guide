@@ -2,13 +2,12 @@ package com.murdock.books.spring.statemachine.guide;
 
 import com.murdock.books.spring.statemachine.guide.configuration.ConfigEnums;
 import com.murdock.books.spring.statemachine.guide.configuration.EnumState;
-import com.murdock.books.spring.statemachine.guide.configuration.EventEnums;
+import com.murdock.books.spring.statemachine.guide.configuration.EnumEvent;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 /**
@@ -18,15 +17,15 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 public class ConfigEnumsTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired
-    private StateMachine<EnumState, EventEnums> stateMachine;
+    private StateMachine<EnumState, EnumEvent> enumConfig;
 
     @Test
     public void test() {
-        Assert.assertNotNull(stateMachine);
+        Assert.assertNotNull(enumConfig);
     }
 
     @Test
     public void sendEvent() {
-        stateMachine.sendEvent(EventEnums.E1);
+        enumConfig.sendEvent(EnumEvent.E1);
     }
 }

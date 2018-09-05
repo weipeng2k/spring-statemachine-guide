@@ -7,5 +7,6 @@ public enum EnumState {
     INIT,
     S1,
     S2,
+    S3,
     END
 }

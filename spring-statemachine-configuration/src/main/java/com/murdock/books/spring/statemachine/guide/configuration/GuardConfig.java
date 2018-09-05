@@ -1,18 +1,21 @@
 package com.murdock.books.spring.statemachine.guide.configuration;
 
+import org.springframework.messaging.Message;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
+import org.springframework.statemachine.guard.Guard;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
 /**
- * @author weipeng2k 2018年08月31日 下午20:01:59
+ * @author weipeng2k 2018年09月04日 下午21:21:52
  */
 @EnableStateMachine
-public class ConfigEnums extends EnumStateMachineConfigurerAdapter<EnumState, EnumEvent> {
+public class GuardConfig extends EnumStateMachineConfigurerAdapter<EnumState, EnumEvent> {
 
     @Override
     public void configure(StateMachineConfigurationConfigurer<EnumState, EnumEvent> config) throws Exception {
@@ -26,20 +29,25 @@ public class ConfigEnums extends EnumStateMachineConfigurerAdapter<EnumState, En
         states.withStates()
                 .initial(EnumState.INIT)
                 .end(EnumState.END)
-                .stateExit(EnumState.INIT, context -> {
-                    System.err.println(
-                            String.format("stateExit %s and context %s", context.getSource().getId(), context));
-                })
                 .states(EnumSet.allOf(EnumState.class));
     }
 
     @Override
     public void configure(StateMachineTransitionConfigurer<EnumState, EnumEvent> transitions) throws Exception {
         transitions.withExternal()
-                .source(EnumState.INIT).target(EnumState.S1).event(EnumEvent.E1)
-                .and().withExternal()
-                .source(EnumState.S1).target(EnumState.S2).event(EnumEvent.E2)
-                .and().withExternal()
-                .source(EnumState.S2).target(EnumState.END).event(EnumEvent.E3);
+                .source(EnumState.INIT).target(EnumState.S1).event(EnumEvent.E1).guard(g1());
+    }
+
+    public Guard<EnumState, EnumEvent> g1() {
+        return context -> {
+            Message<EnumEvent> message = context.getMessage();
+            Object g1 = message.getHeaders().get("g1");
+            boolean result =  Optional.ofNullable(g1)
+                    .map(Object::toString)
+                    .map(Integer::parseInt)
+                    .map(value -> value >= 5)
+                    .orElse(false);
+            return result;
+        };
     }
 }

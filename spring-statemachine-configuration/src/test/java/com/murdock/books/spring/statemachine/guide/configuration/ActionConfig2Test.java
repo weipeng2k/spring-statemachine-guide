@@ -9,25 +9,15 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-/**
- * @author weipeng2k 2018年09月04日 下午21:34:34
- */
-@ContextConfiguration(classes = {GuardConfig.class})
-public class GuardConfigTest extends AbstractJUnit4SpringContextTests {
+import static org.junit.Assert.*;
 
+/**
+ * @author weipeng2k 2018年09月06日 下午20:46:46
+ */
+@ContextConfiguration(classes = {ActionConfig2.class})
+public class ActionConfig2Test extends AbstractJUnit4SpringContextTests {
     @Autowired
     private StateMachine<EnumState, EnumEvent> stateMachine;
-
-    @Test
-    public void test_no() {
-        stateMachine.sendEvent(EnumEvent.E1);
-    }
-
-    @Test
-    public void not_pass() {
-        Message<EnumEvent> eventMessage = MessageBuilder.withPayload(EnumEvent.E1).setHeader("g1", "4").build();
-        stateMachine.sendEvent(eventMessage);
-    }
 
     @Test
     public void pass() {
@@ -41,5 +31,4 @@ public class GuardConfigTest extends AbstractJUnit4SpringContextTests {
 
         Assert.assertSame(stateMachine.getState().getId(), EnumState.S1);
     }
-
 }

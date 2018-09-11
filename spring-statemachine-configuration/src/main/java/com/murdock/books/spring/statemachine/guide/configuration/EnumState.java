@@ -8,5 +8,11 @@ public enum EnumState {
     S1,
     S2,
     S3,
+    S2_1,
+    S2_2,
+    S2_E,
+    S3_1,
+    S3_2,
+    S3_E,
     END
 }

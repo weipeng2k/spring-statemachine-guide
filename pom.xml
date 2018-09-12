@@ -20,6 +20,7 @@
         <module>spring-statemachine-configuration</module>
         <module>spring-statemachine-example-turnstile</module>
         <module>spring-statemachine-example-common</module>
+        <module>spring-statemachine-example-cdplayer</module>
     </modules>
     <dependencyManagement>
         <dependencies>

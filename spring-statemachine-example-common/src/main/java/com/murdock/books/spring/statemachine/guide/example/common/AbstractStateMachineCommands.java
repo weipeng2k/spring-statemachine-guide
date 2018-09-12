@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 命令行抽象类
+ *
  * @author weipeng2k 2018年09月11日 下午13:46:05
  */
 public class AbstractStateMachineCommands<S, E> implements CommandMarker {

@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-statemachine-example-turnstile</artifactId>
-    <name>spring-statemachine-example-turnstile</name>
+    <artifactId>spring-statemachine-example-cdplayer</artifactId>
+    <name>spring-statemachine-example-cdplayer</name>
 
     <dependencies>
         <dependency>

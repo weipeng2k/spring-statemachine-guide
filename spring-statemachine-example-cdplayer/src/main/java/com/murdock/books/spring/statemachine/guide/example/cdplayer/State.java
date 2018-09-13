@@ -1,6 +1,8 @@
 package com.murdock.books.spring.statemachine.guide.example.cdplayer;
 
 /**
+ * BUSY (PLAYING + PAUSED)
+ *
  * @author weipeng2k 2018年09月12日 下午21:20:22
  */
 public enum State {

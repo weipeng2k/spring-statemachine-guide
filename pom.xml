@@ -21,6 +21,7 @@
         <module>spring-statemachine-example-turnstile</module>
         <module>spring-statemachine-example-common</module>
         <module>spring-statemachine-example-cdplayer</module>
+        <module>spring-statemachine-machine-id</module>
     </modules>
     <dependencyManagement>
         <dependencies>
@@ -52,6 +53,11 @@
             <dependency>
                 <groupId>com.murdock.books</groupId>
                 <artifactId>spring-statemachine-example-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.murdock.books</groupId>
+                <artifactId>spring-statemachine-configuration</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

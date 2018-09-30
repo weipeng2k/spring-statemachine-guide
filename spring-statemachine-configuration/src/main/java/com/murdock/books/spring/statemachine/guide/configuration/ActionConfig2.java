@@ -34,6 +34,8 @@ public class ActionConfig2 extends EnumStateMachineConfigurerAdapter<EnumState, 
         states.withStates()
                 .initial(EnumState.INIT)
                 .end(EnumState.END)
+                .state(EnumState.S1, action())
+                .state(EnumState.INIT, action())
                 .state(EnumState.INIT, entry(), exit())
                 .state(EnumState.S1, entry(), exit())
                 .states(EnumSet.allOf(EnumState.class));
@@ -43,6 +45,23 @@ public class ActionConfig2 extends EnumStateMachineConfigurerAdapter<EnumState, 
     public void configure(StateMachineTransitionConfigurer<EnumState, EnumEvent> transitions) throws Exception {
         transitions.withExternal()
                 .source(EnumState.INIT).target(EnumState.S1).event(EnumEvent.E1);
+    }
+
+    @Bean
+    public Action<EnumState, EnumEvent> action() {
+        return new Action<EnumState, EnumEvent>() {
+
+            private int i = id.incrementAndGet();
+
+            {
+                System.err.println("Action create!!!!!!!!!!!! " + i);
+            }
+
+            @Override
+            public void execute(StateContext<EnumState, EnumEvent> context) {
+                System.err.println("Action " + i + " to " + context.getTarget().getId());
+            }
+        };
     }
 
     @Bean

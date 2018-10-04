@@ -25,8 +25,12 @@ public class Application implements CommandLineRunner {
     @Override
     @SuppressWarnings("ALL")
     public void run(String... args) throws Exception {
+        long start = System.currentTimeMillis();
         StateMachine<State, Event> stateMachine = stateMachineFactory.getStateMachine();
+        System.out.println("cost : " + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
         StateMachine<State, Event> stateMachine1 = stateMachineFactory.getStateMachine("my-machine-v1");
+        System.out.println("cost : " + (System.currentTimeMillis() - start));
         System.out.println(stateMachine == stateMachine1);
         System.out.println(stateMachine);
         System.out.println(stateMachine1);
@@ -34,9 +38,9 @@ public class Application implements CommandLineRunner {
         stateMachine.sendEvent(Event.START);
 
         System.out.println("============================================");
-
+        start = System.currentTimeMillis();
         StateMachine<State, Event> stateMachine2 = stateMachineFactory.getStateMachine("my-machine-v2");
-
+        System.out.println("cost : " + (System.currentTimeMillis() - start));
         System.out.println("============================================");
 
         stateMachine2.sendEvent(Event.START);

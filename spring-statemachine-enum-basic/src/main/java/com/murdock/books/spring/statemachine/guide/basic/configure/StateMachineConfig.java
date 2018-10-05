@@ -41,10 +41,14 @@ public class StateMachineConfig
     @Override
     public void configure(StateMachineTransitionConfigurer<States, Events> transitions)
             throws Exception {
-        transitions.withExternal()
-                .source(States.SI).target(States.S1).event(Events.E1)
-                .and().withExternal()
-                .source(States.S1).target(States.S2).event(Events.E2);
+        transitions
+                .withExternal()
+                    .source(States.SI).target(States.S1)
+                    .event(Events.E1)
+                    .and()
+                .withExternal()
+                    .source(States.S1).target(States.S2)
+                    .event(Events.E2);
     }
 
     @Bean

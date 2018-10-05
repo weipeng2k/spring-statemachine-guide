@@ -4,6 +4,9 @@ import com.murdock.books.spring.statemachine.guide.basic.event.Events;
 import com.murdock.books.spring.statemachine.guide.basic.state.States;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.Message;
+import org.springframework.statemachine.StateContext;
+import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
@@ -12,6 +15,7 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import org.springframework.statemachine.listener.StateMachineListener;
 import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
+import org.springframework.statemachine.transition.Transition;
 
 import java.util.EnumSet;
 
@@ -52,7 +56,74 @@ public class StateMachineConfig2
         return new StateMachineListenerAdapter<States, Events>() {
             @Override
             public void stateChanged(State<States, Events> from, State<States, Events> to) {
-                System.out.println("State change to " + to.getId());
+                if (from != null) {
+                    System.err.println(String.format("stateChanged from %s to %s", from.getId(), to.getId()));
+                }
+            }
+
+            @Override
+            public void stateEntered(State<States, Events> state) {
+                System.err.println(String.format("stateEntered %s", state.getId()));
+            }
+
+            @Override
+            public void stateExited(State<States, Events> state) {
+                System.err.println(String.format("stateExited %s", state.getId()));
+            }
+
+            @Override
+            public void eventNotAccepted(Message<Events> event) {
+            }
+
+            @Override
+            public void transition(Transition<States, Events> transition) {
+                if (transition.getSource() != null) {
+                    System.err.println(String.format("transition %s -> %s", transition.getSource().getId(),
+                            transition.getTarget().getId()));
+                }
+            }
+
+            @Override
+            public void transitionStarted(Transition<States, Events> transition) {
+                System.out.println(Thread.currentThread());
+                if (transition.getSource() != null) {
+                    System.err.println(
+                            String.format("transitionStarted %s -> %s", transition.getSource().getId(),
+                                    transition.getTarget().getId()));
+                }
+            }
+
+            @Override
+            public void transitionEnded(Transition<States, Events> transition) {
+                if (transition.getSource() != null) {
+                    System.err.println(String.format("transitionEnded %s -> %s", transition.getSource().getId(),
+                            transition.getTarget().getId()));
+                }
+            }
+
+            @Override
+            public void stateMachineStarted(StateMachine<States, Events> stateMachine) {
+                System.err.println(String.format("stateMachineStarted %s", stateMachine));
+            }
+
+            @Override
+            public void stateMachineStopped(StateMachine<States, Events> stateMachine) {
+                System.err.println(String.format("stateMachineStopped %s", stateMachine));
+            }
+
+            @Override
+            public void stateMachineError(StateMachine<States, Events> stateMachine,
+                                          Exception exception) {
+            }
+
+            @Override
+            public void extendedStateChanged(Object key, Object value) {
+                System.err.println(String.format("extendedStateChanged key %s value %s", key, value));
+            }
+
+            @Override
+            public void stateContext(StateContext<States, Events> stateContext) {
+                System.err.println(String.format("stateContext %s", stateContext));
             }
         };
     }

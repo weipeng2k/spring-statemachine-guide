@@ -1,11 +1,11 @@
 package com.murdock.books.spring.statemachine.guide.example.persist;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.access.StateMachineAccess;
 import org.springframework.statemachine.access.StateMachineFunction;
 import org.springframework.statemachine.support.DefaultStateMachineContext;
-import org.springframework.statemachine.support.LifecycleObjectSupport;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author weipeng2k 2018年10月02日 下午23:03:01
  */
-public class PersistStateMachineHandler extends LifecycleObjectSupport {
+public class PersistStateMachineHandler implements InitializingBean {
 
     private final StateMachine<String, String> stateMachine;
     private final PersistingStateChangeInterceptor persistingStateChangeInterceptor;
@@ -38,23 +38,11 @@ public class PersistStateMachineHandler extends LifecycleObjectSupport {
         persistingStateChangeInterceptor = new PersistingStateChangeInterceptor(compositePersistStateChangeListener);
     }
 
-    @Override
-    protected void onInit() throws Exception {
-        stateMachine.getStateMachineAccessor().doWithAllRegions(
-                new StateMachineFunction<StateMachineAccess<String, String>>() {
-
-                    @Override
-                    public void apply(StateMachineAccess<String, String> function) {
-                        function.addStateMachineInterceptor(persistingStateChangeInterceptor);
-                    }
-                });
-    }
-
     /**
      * 用来编排状态的变迁
      *
-     * @param event the event
-     * @param state the state
+     * @param event 当前发生的事件
+     * @param state 现在所处的状态
      * @return true if event was accepted
      */
     public boolean handleEventWithState(Message<String> event, String state) {
@@ -76,4 +64,15 @@ public class PersistStateMachineHandler extends LifecycleObjectSupport {
         compositePersistStateChangeListener.register(listener);
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        stateMachine.getStateMachineAccessor().doWithAllRegions(
+                new StateMachineFunction<StateMachineAccess<String, String>>() {
+
+                    @Override
+                    public void apply(StateMachineAccess<String, String> function) {
+                        function.addStateMachineInterceptor(persistingStateChangeInterceptor);
+                    }
+                });
+    }
 }
